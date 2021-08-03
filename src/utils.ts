@@ -1,4 +1,5 @@
-import { Gender, Patient } from './types';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Gender, Patient, Entry, Entries } from './types';
 
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
@@ -32,7 +33,6 @@ const parseOccupation = (occupation: unknown): string => {
     return occupation;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isGender = (param: any): param is Gender => {
     return Object.values(Gender).includes(param);
 };
@@ -44,8 +44,19 @@ const parseGender = (gender: unknown): Gender => {
     return gender;
 };
 
+const isArrayOfEntries = (param: any[]): param is Entry[] => {
+    // case of no entries yet
+    if (!Object.values(Entries).includes(param[0])) return true;
+    return Object.values(Entries).includes(param[0].type);
+};
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const parseEntries = (entries: unknown): Entry[] => {
+    if (!entries || !Array.isArray(entries) || !isArrayOfEntries(entries)) {
+        throw new Error('Incorrect or missing comment');
+    }
+    return entries;
+};
+
 export const toPatient = (object: any): Patient => {
     return {
         name: parseName(object.name),
@@ -54,6 +65,7 @@ export const toPatient = (object: any): Patient => {
         ssn: parseSSN(object.ssn),
         dateOfBirth: parseDate(object.dateOfBirth),
         id: parseName(object.id),
+        entries: parseEntries(object.entries),
     };
 };
 
