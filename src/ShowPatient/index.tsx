@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Container, Icon } from "semantic-ui-react";
-import { Patient} from "../types";
+import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
 import { toPatient } from "../utils";
@@ -11,19 +10,19 @@ import { toPatient } from "../utils";
 const ShowPatient = () => {
     const { id } = useParams<{ id: string }>();
     const [{ patients }, dispatch] = useStateValue();
-    const fetchStatus = useRef({ shouldFetch: false, hasFetched: false });
+    const fetchStatus = useRef({ shouldFetch: false });
 
     let patient = patients[id];
 
     try {
         patient = toPatient({ ...patient });
-    } catch (e) {
-        if (!patient.ssn && !fetchStatus.current.hasFetched) {
+    } catch {
+        if (!patient.ssn) {
             fetchStatus.current = { ...fetchStatus.current, shouldFetch: true };
-        } else {
-            console.error(e);
         }
+        console.log(`${patient.name} missed data, fetched data from API`);
     }
+
 
     useEffect(() => {
         const getPatient = async () => {
@@ -33,7 +32,6 @@ const ShowPatient = () => {
                     `${apiBaseUrl}/patients/${id}`
                 );
                 dispatch(updatePatient(fetchedPatient));
-                fetchStatus.current = { ...fetchStatus.current, hasFetched: true };
             } catch (e) {
                 console.error(e);
             }
@@ -45,15 +43,30 @@ const ShowPatient = () => {
     }, [id, dispatch]);
 
     const showGender = () => {
-        if(patient.gender === "male") {
+        if (patient.gender === "male") {
             return <Icon name="mars"></Icon>;
         }
-        if(patient.gender === "female") {
+        if (patient.gender === "female") {
             return <Icon name="venus"></Icon>;
         }
-        if(patient.gender === "other") {
+        if (patient.gender === "other") {
             return <Icon name="transgender"></Icon>;
         }
+    };
+
+    if (!patient) return null;
+
+    const showEntries = () => {
+        if (!patient.entries) return null;
+         return (
+            <div>
+                <ul>
+                    {patient.entries.map((entry) =>
+                        <li key={entry.id}> <strong>{entry.date}</strong> <br/>{entry.description} <br/> <small>Diagnosis code: {entry.diagnosisCodes}</small></li>
+                    )}
+                </ul>
+            </div>
+        );
     };
 
     return (
@@ -65,6 +78,8 @@ const ShowPatient = () => {
             <div><strong>SSN:</strong> {patient.ssn}</div>
             <div><strong>Date of Birth:</strong> {patient.dateOfBirth} </div>
             <div><strong>Occupation:</strong> {patient.occupation}</div>
+            <h4>Entries</h4>
+            <div>{showEntries()}</div>
         </div >
     );
 };
