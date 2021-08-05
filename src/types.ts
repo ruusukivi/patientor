@@ -22,9 +22,9 @@ export interface Patient {
 }
 
 export enum Entries {
-  HealthCheck = "HealthCheckEntry",
-  OccupationalHealthCare = "OccupationalHealthcareEntry",
-  Hospital = "HospitalEntry",
+  HealthCheckEntry = "HealthCheckEntry",
+  OccupationalHealthCareEntry = "OccupationalHealthcareEntry",
+  HospitalEntry = "HospitalEntry",
 }
 
 export interface BaseEntry {

@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Container, Icon } from "semantic-ui-react";
+import { Container, Icon, Card } from "semantic-ui-react";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
 import { toPatient } from "../utils";
+import EntryData from "./EntryData";
 
 const ShowPatient = () => {
     const { id } = useParams<{ id: string }>();
@@ -22,7 +23,6 @@ const ShowPatient = () => {
         }
         console.log(`${patient.name} missed data, fetched data from API`);
     }
-
 
     useEffect(() => {
         const getPatient = async () => {
@@ -54,32 +54,43 @@ const ShowPatient = () => {
         }
     };
 
-    if (!patient) return null;
-
     const showEntries = () => {
-        if (!patient.entries) return null;
-         return (
+        if (patient.entries.length < 1) {
+            return (
+                <div>No entries yet.</div>
+            );
+        }        
+        return (
             <div>
-                <ul>
-                    {patient.entries.map((entry) =>
-                        <li key={entry.id}> <strong>{entry.date}</strong> <br/>{entry.description} <br/> <small>Diagnosis code: {entry.diagnosisCodes}</small></li>
-                    )}
-                </ul>
+            {patient
+            .entries.map((entry) => (
+                    <EntryData key={entry.id} entry={entry} />
+                ))
+            }
             </div>
         );
     };
+
+    if (!patient) return null;
+
 
     return (
         <div>
             <Container textAlign="center">
                 <h3>Patient info</h3>
             </Container>
-            <h3>{patient.name} {showGender()}</h3>
-            <div><strong>SSN:</strong> {patient.ssn}</div>
-            <div><strong>Date of Birth:</strong> {patient.dateOfBirth} </div>
-            <div><strong>Occupation:</strong> {patient.occupation}</div>
-            <h4>Entries</h4>
-            <div>{showEntries()}</div>
+
+            <br /><br />
+            <Card.Content>
+
+                <h3>{patient.name} {showGender()}</h3>
+                <div><strong>SSN:</strong> {patient.ssn}</div>
+                <div><strong>Date of Birth:</strong> {patient.dateOfBirth} </div>
+                <div><strong>Occupation:</strong> {patient.occupation}</div>
+
+                <h3>Entries</h3>
+                {showEntries()}
+            </Card.Content>
         </div >
     );
 };
