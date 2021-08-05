@@ -15,68 +15,71 @@ const EntryData = ({ entry }: { entry: Entry }) => {
         case "HealthCheckEntry":
             return (
                 <div>
-                <Table>
-                <Table.Header></Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>
-                            {entry.date} <Icon name="heartbeat"></Icon>
-                        </Table.HeaderCell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.Cell>
-                            {entry.description}
-                        </Table.Cell>
-                        <Table.Cell>
-                            <strong>Specialist: </strong> {entry.specialist}
-                        </Table.Cell>
-                        <Table.Cell><HealthRatingBar rating={entry.healthCheckRating} showText={true} /></Table.Cell>
-                        <Table.Cell>  
-                            <ShowDiagnoses diagnosesCodes={entry.diagnosisCodes} />
-                        </Table.Cell>
-                    </Table.Row>
-                </Table>
+                    <Table>
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.HeaderCell>
+                                    {entry.date} <Icon name="heartbeat"></Icon>
+                                </Table.HeaderCell>
+                            </Table.Row>
+                            <Table.Row>
+                                <Table.Cell>
+                                    {entry.description}
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <strong>Specialist: </strong> {entry.specialist}
+                                </Table.Cell>
+                                <Table.Cell><HealthRatingBar rating={entry.healthCheckRating} showText={true} /></Table.Cell>
+                                <Table.Cell>
+                                    <ShowDiagnoses diagnosesCodes={entry.diagnosisCodes} />
+                                </Table.Cell>
+                            </Table.Row>
+                        </Table.Body>
+                    </Table>
                 </div>
             );
         case "OccupationalHealthcareEntry":
             return (
                 <div>
-                <Table>
-                <Table.Header></Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>
-                            {entry.date} <Icon name="stethoscope"></Icon>
-                        </Table.HeaderCell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.Cell>{entry.description}</Table.Cell>
-                        <Table.Cell><strong>Specialist: </strong> {entry.specialist}</Table.Cell>
-                        <Table.Cell><strong>Employer name: </strong> {entry.employerName}</Table.Cell>
-                        <Table.Cell>  
-                            <ShowDiagnoses diagnosesCodes={entry.diagnosisCodes} />
-                        </Table.Cell>
-                    </Table.Row>
-                </Table>
+                    <Table>
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.HeaderCell>
+                                    {entry.date} <Icon name="stethoscope"></Icon>
+                                </Table.HeaderCell>
+                            </Table.Row>
+                            <Table.Row>
+                                <Table.Cell>{entry.description}</Table.Cell>
+                                <Table.Cell><strong>Specialist: </strong> {entry.specialist}</Table.Cell>
+                                <Table.Cell><strong>Employer name: </strong> {entry.employerName}</Table.Cell>
+                                <Table.Cell>
+                                    <ShowDiagnoses diagnosesCodes={entry.diagnosisCodes} />
+                                </Table.Cell>
+                            </Table.Row>
+                        </Table.Body>
+                    </Table>
                 </div>
 
             );
         case "HospitalEntry":
             return (
                 <div>
-                <Table>
-                    <Table.Header></Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>
-                            {entry.date} <Icon name="hospital"></Icon>
-                        </Table.HeaderCell>
-                    </Table.Row>
-                    <Table.Row>
-                        <Table.Cell>{entry.description}</Table.Cell>
-                        <Table.Cell> <strong>Specialist: </strong> {entry.specialist}</Table.Cell>
-                        <Table.Cell>  
-                            <ShowDiagnoses diagnosesCodes={entry.diagnosisCodes} />
-                        </Table.Cell>
-                    </Table.Row>
-                </Table>
+                    <Table>
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.HeaderCell>
+                                    {entry.date} <Icon name="hospital"></Icon>
+                                </Table.HeaderCell>
+                            </Table.Row>
+                            <Table.Row>
+                                <Table.Cell>{entry.description}</Table.Cell>
+                                <Table.Cell> <strong>Specialist: </strong> {entry.specialist}</Table.Cell>
+                                <Table.Cell>
+                                    <ShowDiagnoses diagnosesCodes={entry.diagnosisCodes} />
+                                </Table.Cell>
+                            </Table.Row>
+                        </Table.Body>
+                    </Table>
                 </div>
             );
         default:
