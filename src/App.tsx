@@ -42,12 +42,7 @@ const App = () => {
     };
     void fetchDiagnosisList();
   }, [dispatch]);
-
-  if (.loading)  {
-    return <div>loading...</div>
-  }
-
-
+  
   return (
     <div className="App">
       <Router>
