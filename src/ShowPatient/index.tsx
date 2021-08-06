@@ -1,17 +1,46 @@
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Container, Icon, Card } from "semantic-ui-react";
+import { Container, Icon, Card, Button } from "semantic-ui-react";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
 import { toPatient } from "../utils";
 import EntryData from "./EntryData";
+import { EntryFormValues } from "../AddEntryModal/AddEntryForm";
+import AddEntryModal from "../AddEntryModal";
 
 const ShowPatient = () => {
     const { id } = useParams<{ id: string }>();
     const [{ patients }, dispatch] = useStateValue();
     const fetchStatus = useRef({ shouldFetch: false });
+
+    const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<string | undefined>();
+
+    const openModal = (): void => setModalOpen(true);
+
+    const closeModal = (): void => {
+        setModalOpen(false);
+        setError(undefined);
+    };
+
+    const submitNewEntry = async (values: EntryFormValues) => {
+        try {
+            const { data: updatedPatient } = await axios.post<Patient>(
+                `${apiBaseUrl}/patients/${patient.id}/entries`,
+                values
+            );
+            dispatch(updatePatient(updatedPatient));
+            closeModal();
+        } catch (e) {
+            console.error(e.response?.data || 'Unknown Error');
+            setError(e.response?.data?.error || 'Unknown error');
+        }
+    };
+
+
+
 
     let patient = patients[id];
 
@@ -59,14 +88,14 @@ const ShowPatient = () => {
             return (
                 <div>No entries yet.</div>
             );
-        }        
+        }
         return (
             <div>
-            {patient
-            .entries.map((entry) => (
-                    <EntryData key={entry.id} entry={entry} />
-                ))
-            }
+                {patient
+                    .entries.map((entry) => (
+                        <EntryData key={entry.id} entry={entry} />
+                    ))
+                }
             </div>
         );
     };
@@ -91,6 +120,15 @@ const ShowPatient = () => {
                 <h3>Entries</h3>
                 {showEntries()}
             </Card.Content>
+            <div><br/>
+                <AddEntryModal
+                    modalOpen={modalOpen}
+                    onSubmit={submitNewEntry}
+                    error={error}
+                    onClose={closeModal}
+                />
+                <Button onClick={() => openModal()}>Add New Entry</Button>
+            </div>
         </div >
     );
 };
