@@ -22,9 +22,9 @@ export interface Patient {
 }
 
 export enum Entries {
-  HealthCheckEntry = "HealthCheckEntry",
-  OccupationalHealthCareEntry = "OccupationalHealthcareEntry",
-  HospitalEntry = "HospitalEntry",
+  HealthCheck = "HealthCheck",
+  OccupationalHealthCare = "OccupationalHealthCare",
+  Hospital = "Hospital",
 }
 
 export interface BaseEntry {
@@ -43,12 +43,12 @@ export enum HealthCheckRating {
 }
 
 export interface HealthCheckEntry extends BaseEntry {
-  type: "HealthCheckEntry";
+  type: Entries.HealthCheck;
   healthCheckRating: HealthCheckRating;
 }
 
 export interface HospitalEntry extends BaseEntry {
-  type: "HospitalEntry";
+  type: Entries.Hospital;
   discharge: Discharge
 }
 
@@ -58,7 +58,7 @@ export interface Discharge {
 }
 
 export interface OccupationalHealthcareEntry extends BaseEntry {
-  type: "OccupationalHealthcareEntry";
+  type: Entries.OccupationalHealthCare;
   employerName: string;
   sickLeave?: SickLeave
 }

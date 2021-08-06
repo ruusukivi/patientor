@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon, Table } from "semantic-ui-react";
-import { Entry } from "../types";
+import { Entry, Entries } from "../types";
 import HealthRatingBar from "../components/HealthRatingBar";
 import ShowDiagnoses from "./ShowDiagnoses";
 
@@ -12,7 +12,7 @@ const assertNever = (value: never): never => {
 
 const EntryData = ({ entry }: { entry: Entry }) => {
     switch (entry.type) {
-        case "HealthCheckEntry":
+        case Entries.HealthCheck:
             return (
                 <div>
                     <Table>
@@ -38,7 +38,7 @@ const EntryData = ({ entry }: { entry: Entry }) => {
                     </Table>
                 </div>
             );
-        case "OccupationalHealthcareEntry":
+        case Entries.OccupationalHealthCare:
             return (
                 <div>
                     <Table>
@@ -61,7 +61,7 @@ const EntryData = ({ entry }: { entry: Entry }) => {
                 </div>
 
             );
-        case "HospitalEntry":
+        case Entries.Hospital:
             return (
                 <div>
                     <Table>
